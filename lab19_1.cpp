@@ -20,20 +20,76 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
-
+void importDataFromFile(string filename, vector<string> &names, vector<int> &scores, vector<char> &grades){
+    ifstream source;
+    source.open(filename);
+    string textline;
+    char format[] = "%[^:]: %d %d %d";
+    int a,b,c;
+    char d[100];
+    while(getline(source,textline))
+    {
+        sscanf(textline.c_str(),format,d,&a,&b,&c);
+        names.push_back(d);
+        int sum = a+b+c;
+        scores.push_back(sum);
+        grades.push_back(score2grade(sum));
+    }
 }
 
-void getCommand(){
-
+void getCommand(string &command, string &key){
+    string e;
+    char comman[100],kea[100];
+    cout << "Please input your command: "; 
+    getline(cin,e);
+    if(toUpperStr(e) == "EXIT")
+    {
+        command = e;
+    }
+    else
+    {
+        e.insert(e.size(),"!");
+        char format2[] = "%[^ !] %[^!]!";
+        sscanf(e.c_str(),format2,comman,kea);
+        command = comman;
+        key = kea;
+    }
 }
 
-void searchName(){
-
+void searchName(vector<string> names ,vector<int> scores ,vector<char> grades ,string key){
+    int f = 0;
+    string ke = toUpperStr(key);
+    cout << "---------------------------------\n";
+    for(unsigned int i=0;i<scores.size();i++)
+    {
+        string nam = toUpperStr(names[i]);
+        if(nam==ke)
+        {
+            cout << names[i] << "\'s score = " << scores[i] << "\n";
+            cout << names[i] << "\'s grade = " << grades[i] << "\n";
+            f+=1;
+        } 
+    }
+    if(f == 0 ) cout << "Cannot found.\n";
+    cout << "---------------------------------\n";
 }
 
-void searchGrade(){
-
+void searchGrade(vector<string> names ,vector<int> scores ,vector<char> grades ,string key){
+    int f = 0;
+    string ke = toUpperStr(key);
+    cout << "---------------------------------\n";
+    for(unsigned int i=0;i<scores.size();i++)
+    {
+        string gra;
+        gra.push_back(grades[i]);
+        if(gra==ke)
+        {
+            cout << names[i] << " (" << scores[i] << ")\n";
+            f+=1;
+        } 
+    }
+    if(f == 0 ) cout << "Cannot found.\n";
+    cout << "---------------------------------\n";
 }
 
 
